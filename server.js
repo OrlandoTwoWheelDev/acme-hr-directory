@@ -1,11 +1,31 @@
 const express = require('express');  //need npm i express first
-const app = express();  //
-app.use(express.json());
+const app = express();
+app.use(express.json()); // used to convert requests
 
-app.get('./', (req, res) => {
-  res.send(`here`);
+app.use(express.static('dist'));  //needed to ensure safe file is sent up to front end
+
+app.get('./employees', (req, res) => {
+  res.send(`${__dirname}/employees`); // will need the ${__dirname} to not throw an error
 })
 
+//getting the employees from the js file
+app.get('/api/v1/employees', async (req, res) => {
+  console.log(`getting foods`);
+  const allEmployees = await getAllEmployees();
+});
+
+
+//getting a particular employee by id
+app.get('api/v1/employees/:id', async (req, res) => {
+  const { id } = req.params;
+  const foundEmployee = await getEmployeeItem(id);
+
+
+  res.send(foundEmployee);
+})
+
+
+//used to display errors
 app.use((req, res) => {
   res.status(404).send(`PAGE NOT FOUND`);
 });
@@ -29,3 +49,14 @@ console.log(`welcome`);
 //or
 //npm i nodemon
 //run with nodemon server.js
+
+
+//make sure you're connected to the database 
+// or else there will be an error
+
+
+//CUSTOM ERROR HANDLER, express knows 
+// that it is due to having 4 parameters
+app.use((err, req, res, next) => {
+  res.status(err.status).send(err.message);
+});
