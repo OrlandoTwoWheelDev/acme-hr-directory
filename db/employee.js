@@ -1,4 +1,4 @@
-const createEmployees = async(employeename) => {
+const createEmployees = async (employeename) => {
   console.log(`CREATING EMPLOYEES`);
   try {
     await client.query(`
@@ -10,7 +10,23 @@ const createEmployees = async(employeename) => {
   }
 }
 
+
+//creating a route for the front end
+const getAllEmployees = async () => {
+  try {
+    const { } = await client.query(`
+      SELECT * FROM employees;`)
+  } catch (err) {
+    console.log(err);
+  }
+  console.log(`GETTING ALL EMPLOYEES`);
+}
+
 module.exports = {
   createEmployees
 }
 //curly braces for multiple OBJECTS 
+
+
+//invoking
+getAllEmployees();
