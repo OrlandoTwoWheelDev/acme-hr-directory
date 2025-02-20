@@ -1,9 +1,9 @@
-const createEmployees = async() => {
+const createEmployees = async(employeename) => {
   console.log(`CREATING EMPLOYEES`);
   try {
     await client.query(`
       INSERT INTO employees (name)
-      VALUES('${employeename})
+      VALUES('${employeename}')
       `);
   } catch (err) {
     console.log(err);
@@ -13,3 +13,4 @@ const createEmployees = async() => {
 module.exports = {
   createEmployees
 }
+//curly braces for multiple OBJECTS 

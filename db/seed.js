@@ -1,10 +1,14 @@
-const { createDepartments } = require('./department')
-const { createEmployees } = require('./employee')
-app.use(express.json());
+const { createDepartments } = require('/db/department')
+const { createEmployees } = require('/db/employee')
+const client = require('/db/client.js') //importing so it can connect
+app.use(express.json()); //needed for 
 
+//This goes first, because without it, it can't 
+// create something that already exists
 const dropTables = async () => {
   try {
-    await client.query(`
+    //talk to the database with client.query
+    await client.query(` 
       DROP TABLE IF EXISTS employees;
       DROP TABLE IF EXISTS departments;
       `);
@@ -15,6 +19,7 @@ const dropTables = async () => {
 
 const createTable = async () => {
   try {
+    //talk to the database with client.query
     await client.query(`
       CREATE TABLE departments(
       id SERIAL PRIMARY KEY,
@@ -43,7 +48,6 @@ const syncAndSeed = async () => {
 
   console.log(`CREATING DEPARTMENTS`);
   await createDepartments('Parts');
-  await createDepartments('Human Resources');
   await createDepartments('Marketing');
   await createDepartments('Comedy');
   console.log(`DEPARTMENT CREATED`);
@@ -60,5 +64,6 @@ const syncAndSeed = async () => {
   console.log(`CREATING TABLES`);
   await createTable();
   console.log(`TABLES CREATED`);
+  await client.end();
 }
 syncAndSeed();
